@@ -14,3 +14,4 @@ develop-eggs
 dist
 htmlcov
 parts
+.idea/

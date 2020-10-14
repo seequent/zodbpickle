@@ -1481,9 +1481,17 @@ def _loads(s, *, fix_imports=True, encoding="ASCII", errors="strict"):
 # Use the faster _pickle if possible
 try:
     from zodbpickle._pickle import *
+    from zodbpickle._pickle import loads as _upstream_loads
 except ImportError:
     Pickler, Unpickler = _Pickler, _Unpickler
-    dump, dumps, load, loads = _dump, _dumps, _load, _loads
+    dump, dumps, load, _upstream_loads = _dump, _dumps, _load, _loads
+
+
+def loads(s, *args, **kwargs):
+    if isinstance(s, str):
+        s = s.encode('utf-8')
+    return _upstream_loads(s, *args, **kwargs)
+
 
 # Doctest
 def _test():
